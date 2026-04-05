@@ -60,13 +60,13 @@ plt.rcParams.update({
 })
 
 CONDITION_LABELS = {
-    "B-0": "B-0\n(Baseline)",
-    "B-1": "B-1\n(+Epi)",
+    "B-0": "B-0\n(Quant-Threshold)",   # quantitative-threshold proxy — NOT NLP/EIOS
+    "B-1": "B-1\n(+IsoForest)",
     "B-2": "B-2\n(+CFR/Lead)",
     "M-IF": "M-IF\n(IsoForest)",
     "M-RF": "M-RF\n(RandForest)",
     "M-GCI": "M-GCI\n(+GCI)",
-    "M-FULL": "M-FULL\n(Final)",
+    "M-FULL": "M-FULL\n(Full Model)",
 }
 
 
@@ -129,7 +129,7 @@ def make_fig3(results: dict, outdir: str) -> None:
     If not present, synthetic data are generated from reported statistics.
     """
     conditions = ["B-0", "B-2", "M-FULL"]
-    display_labels = ["B-0\n(Baseline)", "B-2\n(+CFR/Lead)", "M-FULL\n(Final)"]
+    display_labels = ["B-0\n(Quant-Threshold)", "B-2\n(+CFR/Lead)", "M-FULL\n(Full Model)"]
     colors_box = [LANCET_PALETTE[0], LANCET_PALETTE[3], LANCET_PALETTE[1]]
 
     data = []
@@ -242,7 +242,7 @@ def make_fig5(results: dict, outdir: str) -> None:
     deltas = [chain_means[0]] + [chain_means[i] - chain_means[i - 1]
                                   for i in range(1, len(chain_means))]
     delta_labels = [
-        "B-0\nBase AUC",
+        "B-0\n(Q-Threshold)",
         "B-0→B-2\n+CFR/Lead",
         "B-2→M-RF\n+Stacking",
         "M-RF→M-GCI\n+GCI",
@@ -330,7 +330,7 @@ def make_fig6(shap_csv: str, outdir: str) -> None:
             linewidth=0.6, height=0.7)
     ax.set_yticks(y_pos)
     ax.set_yticklabels(df["feature"], fontsize=9)
-    ax.set_xlabel("Mean |SHAP value| (M-FULL, class = biological threat)")
+    ax.set_xlabel("Mean |SHAP value| (M-FULL, class = high-consequence outbreak)")
     ax.set_title("Feature Importance: SHAP Analysis (M-FULL Model)")
 
     # Annotate top 5
